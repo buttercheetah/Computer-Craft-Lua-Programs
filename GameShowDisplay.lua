@@ -16,6 +16,7 @@ while true do
 		if res[1] == cname then
 			monitor.clear()
 			monitor.write(res[2])
+		end
 		
 	end
 end
