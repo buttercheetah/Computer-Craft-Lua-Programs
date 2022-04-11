@@ -28,6 +28,10 @@ function printergodown()
 	printer.setCursorPos(1, tonumber(yp + 1))
 end
 while (1==1) do
+	if (receivebankaccount == "") or (storename == "") then
+		print("ERROR! Variables not set!")
+		break
+	end
 	local total = 0
 	printer.newPage()
 	while (1==1) do
@@ -38,12 +42,14 @@ while (1==1) do
 			print("Paper Low")
 		end
 		print("Running total - " .. total)
-		print("input item price\nEnter [69.420] to stop")
-		local price = read()
-		if price == "69.420" then
+		print("input item name\nEnter [END] to stop")
+		local name = read()
+		if name == "END" then
 			print("Card?\nY/n")
 			local choice = read()
 			if (choice == "N") or (choice == "n") then
+				shell.run("clear")
+				print("Total " .. total)
 				printer.write("Total:" .. tostring(tonumber(total)) .. "\n")
 				printergodown()
 				printer.write("Paid by cash" .. "\n")
@@ -56,6 +62,8 @@ while (1==1) do
 				printergodown()
 				printer.write("Total:" .. tostring(tonumber(total + (total * 0.01))) .. "\n")
 				printergodown()
+				shell.run("clear")
+				print("Total " ..  .. tostring(tonumber(total + (total * 0.01))))
 				print("please enter your card")
 				local buyername = cardread()
 				local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(buyername .. "|Purchase at " .. storename .. "|" .. -tonumber(total + (total * 0.01))))
@@ -73,8 +81,8 @@ while (1==1) do
 			printer.endPage()
 			break
 		else
-			print("input item name")
-			local name = read()
+			print("Please input the item price")
+			local price = read()
 			total = total + tonumber(price)
 			printer.write(price .. " - " .. name .. "\n")
 		end
