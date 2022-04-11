@@ -1,4 +1,5 @@
 local speaker = peripheral.find("speaker")
+local modem = peripheral.find("modem") or error("No modem attached", 0)
 local printer = peripheral.find("printer")
 local receivebankaccount = ""
 local storename = ""
