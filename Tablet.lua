@@ -19,6 +19,11 @@ function getnewannouncements ()
     print(body)
   end
 end
+function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
 function adminstuff ()
   tmprun2 = "True"
   while (tmprun2 == "True") do
@@ -28,7 +33,9 @@ function adminstuff ()
     print("2) Make new OS an input version")
     print("3) New Announcement")
 	print("4) New user")
-    print("5) back")
+	print("5) Run External Application")
+	print("6) Run File directly from URL")
+    print("7) back")
     local choice = read()
     if (choice == "1") then
       local request = http.post("http://misc.iefi.xyz/minecraft/api/setversion/", tostring(osv))
@@ -59,6 +66,20 @@ function adminstuff ()
       local body = request.readAll()
 	  os.sleep(2)
     elseif (choice == "5") then
+		print("File name")
+		local fn = read()
+		if file_exists(fn) then
+			shell.run(fn)
+		elseif file_exists(fn .. ".lua") then
+			shell.run(fn .. ".lua")
+		else
+			print("file doesnt exist")
+		end
+	elseif (choice == "6") then
+		print("URL")
+		local url = read()
+		shell.run('wget run ' .. url)
+	elseif (choice == "7") then
       tmprun2 = "False"
     end
   end
