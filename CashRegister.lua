@@ -6,6 +6,38 @@ function file_exists(name)
    local f=io.open(name,"r")
    if f~=nil then io.close(f) return true else return false end
 end
+network = nil
+function getandprintnetwork () -- Function to require 'wifi' comment out function call below to ignore
+	network = nil
+	shell.run("clear")
+	print("Attempting to connect")
+	while network == nil do
+		modem.open(2) -- Open 43 so we can receive replies
+		modem.transmit(1, 2, "wifissidget")
+		local event, side, channel, replyChannel, distance
+		local timeout = os.startTimer(5)
+		while true do
+			osevent = {os.pullEvent()}
+			if osevent[1] == "modem_message" then
+				local channel = osevent[3]
+				local replychannel = osevent[5]
+				network = osevent[5]
+				local distance = osevent[6]
+				print(distance)  
+				if channel == 2 then
+					print(tostring(network))
+					break
+				end
+			elseif osevent[1] == "timer"  then
+				break
+			end
+		end
+		if network == nil then
+			print("No network found. retrying in 5 seconds")
+			os.sleep(5)
+		end
+	end
+end
 function cardread()
 	local name = nil
 	while (name == nil) do
@@ -32,6 +64,7 @@ while (1==1) do
 		print("ERROR! Variables not set!")
 		break
 	end
+	getandprintnetwork()  -- 'wifi' function call
 	local total = 0
 	printer.newPage()
 	while (1==1) do
