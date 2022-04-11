@@ -26,7 +26,6 @@ end
 while (1==1) do
 	local total = 0
 	printer.newPage()
-	printersetPageTitle(storename .. " Recipt")
 	if (printer.getInkLevel() < 10) then
 		print("Ink Low")
 	elseif (printer.getPaperLevel() < 10) then
@@ -36,13 +35,13 @@ while (1==1) do
 		print("input item price\nEnter [69.420] to stop")
 		local price = read()
 		if price == "69.420" then
-			printer.write("subtotal:" .. total)
-			printer.write("Tax:" .. tostring(tonumber(total * 0.01)))
-			printer.write("Total:" .. tostring(tonumber(total + (total * 0.01))))
+			printer.write("subtotal:" .. total .. "\n")
+			printer.write("Tax:" .. tostring(tonumber(total * 0.01)) .. "\n")
+			printer.write("Total:" .. tostring(tonumber(total + (total * 0.01))) .. "\n")
 			print("Card?\nY/n")
 			local choice = read()
-			if (choice == "N") or (choice == "N") then
-				printer.write("Paid by cash")
+			if (choice == "N") or (choice == "n") then
+				printer.write("Paid by cash" .. "\n")
 			else
 				print("please enter your card")
 				local buyername = cardread()
@@ -51,15 +50,16 @@ while (1==1) do
 				local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring("buttercheetah|Tax from " .. storename .. "|" .. tonumber(total * 0.01)))
 				os.sleep(1)
 				local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(receivebankaccount .. "|Purchase from " .. storename .. "|" .. tonumber(total)))
-				printer.write("Paid by card")
-				printer.endPage()
+				printer.write("Paid by card" .. "\n")
 			end
+			printer.setPageTitle(storename .. " Recipt")
+			printer.endPage()
 			break
 		else
 			print("input item name")
 			local name = read()
 			total = total + tonumber(price)
-			printer.write(price .. " - " .. name)
+			printer.write(price .. " - " .. name .. "\n")
 		end
 	end
 end
