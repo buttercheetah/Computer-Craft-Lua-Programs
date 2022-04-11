@@ -63,7 +63,7 @@ while (1==1) do
 				printer.write("Total:" .. tostring(tonumber(total + (total * 0.01))) .. "\n")
 				printergodown()
 				shell.run("clear")
-				print("Total " ..  .. tostring(tonumber(total + (total * 0.01))))
+				print("Total " .. tostring(tonumber(total + (total * 0.01))))
 				print("please enter your card")
 				local buyername = cardread()
 				local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(buyername .. "|Purchase at " .. storename .. "|" .. -tonumber(total + (total * 0.01))))
