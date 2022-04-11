@@ -1,5 +1,6 @@
 local modem = peripheral.find("modem") or error("No modem attached", 0)
-local cname = "c1"
+local monitor = peripheral.find("monitor")
+local cname = "1"
 monitor.setTextScale(5)
 function split(s, delimiter)
     result = {};
@@ -15,6 +16,7 @@ while true do
 		local res = split(message, "|")
 		if res[1] == cname then
 			monitor.clear()
+			monitor.setCursorPos(1, 1)
 			monitor.write(res[2])
 		end
 		

@@ -1,5 +1,5 @@
 local modem = peripheral.find("modem") or error("No modem attached", 0)
-while True do
+while (1 == 1) do
 	print("please inpuut screen number")
 	local screen = read()
 	print("please input new score")
