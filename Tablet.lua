@@ -195,7 +195,7 @@ while (1 == 1) do
     local usersel2 = read()
     if (usersel2 == "1") then
 		shell.run("rm tabletos")
-        shell.run("pastebin get A43mjrFS tabletos")
+        shell.run("wget https://raw.githubusercontent.com/buttercheetah/Computer-Craft-Lua-Programs/main/Tablet.lua tabletos")
         shell.run("reboot")
     elseif (usersel2 == "2") then
         shell.run("reboot")
