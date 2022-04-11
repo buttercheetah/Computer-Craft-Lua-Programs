@@ -13,11 +13,17 @@ while true do
 	modem.open(10)  -- Open channel 3 so that we can listen on it
 	local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
 	if (senderChannel == 10) then
-		local res = split(message, "|")
-		if res[1] == cname then
+		if message == "resetall" then
 			monitor.clear()
 			monitor.setCursorPos(1, 1)
-			monitor.write(res[2])
+			monitor.write("0")
+		else
+			local res = split(message, "|")
+			if res[1] == cname then
+				monitor.clear()
+				monitor.setCursorPos(1, 1)
+				monitor.write(res[2])
+			end
 		end
 		
 	end
