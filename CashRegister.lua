@@ -25,7 +25,6 @@ function cardread()
 end
 while (1==1) do
 	local total = 0
-	endPage()
 	printer.newPage()
 	printersetPageTitle(storename .. " Recipt")
 	if (printer.getInkLevel() < 10) then
@@ -42,7 +41,7 @@ while (1==1) do
 			printer.write("Total:" .. tostring(tonumber(total + (total * 0.01))))
 			print("Card?\nY/n")
 			local choice = read()
-			if (choice = "N") or (choice == "N") then
+			if (choice == "N") or (choice == "N") then
 				printer.write("Paid by cash")
 			else
 				print("please enter your card")
@@ -53,6 +52,7 @@ while (1==1) do
 				os.sleep(1)
 				local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(receivebankaccount .. "|Purchase from " .. storename .. "|" .. tonumber(total)))
 				printer.write("Paid by card")
+				printer.endPage()
 			end
 			break
 		else
