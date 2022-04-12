@@ -44,13 +44,17 @@ while (1==1) do
         trans('Cheating')
     end
     local timeout = os.startTimer(sleeptimer)
-	while true do
-		osevent = {os.pullEvent()}
-		if osevent[1] == "key" then
-			break
-		elseif osevent[1] == "timer"  then
-			break
-		end
+    while true do
+        osevent = {os.pullEvent()}
+  -- print(osevent[1] .. osevent[2])
+        if osevent[1] == "key" then
+            break
+        elseif osevent[1] == "timer"  then
+            if osevent[2] == timeout then
+    break
+   end  
+    end
+ os.cancelTimer(timeout)
+ end
 end
-    
     
