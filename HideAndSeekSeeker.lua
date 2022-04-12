@@ -3,6 +3,6 @@ while true do
 	modem.open(20)  -- Open channel 3 so that we can listen on it
 	local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
 	if (senderChannel == 20) then
-		print("Theres someone of floor " .. message)		
+		print("Theres someone on floor " .. message)		
 	end
 end

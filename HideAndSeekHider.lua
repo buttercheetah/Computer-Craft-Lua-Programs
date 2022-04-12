@@ -1,7 +1,7 @@
 local modem = peripheral.find("modem") or error("No modem attached", 0)
-local sleeptimer = 10
+local sleeptimer = 300
 function trans(floor)
-    print("floor " .. floor)
+    print("Transmitting floor " .. floor)
     modem.transmit(20, 21, floor)
 end
 while (1==1) do
@@ -43,7 +43,14 @@ while (1==1) do
     else
         trans('Cheating')
     end
-    os.sleep(sleeptimer)
+    local timeout = os.startTimer(sleeptimer)
+	while true do
+		osevent = {os.pullEvent()}
+		if osevent[1] == "key" then
+			break
+		elseif osevent[1] == "timer"  then
+			break
+		end
 end
     
     
