@@ -16,12 +16,29 @@ function adminstuff ()
     local choice = read()
     if (choice == "1") then
 		shell.run("rm atm")
-        shell.run("pastebin get wGr1kDmb atm")
+        shell.run("wget https://github.com/buttercheetah/Computer-Craft-Lua-Programs/raw/main/ATM.lua atm")
         shell.run("reboot")
     elseif (choice == "5") then
       tmprun2 = "False"
     end
   end
+end
+function split(s, delimiter)
+    result = {};
+    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+        table.insert(result, match);
+    end
+    return result;
+end
+function recenttransacton(name, amount)
+	local request = http.post("http://misc.iefi.xyz/minecraft/api/getbalhistory/", name .. "|" .. amount)
+	local body = request.readAll()
+	if amount == 1 then
+		body = string.gsub(body, "%)", "")
+	else
+		body = string.gsub(body, "%)", "\n")
+	end
+	return tonumber(body)
 end
 while (1 == 1) do
 	runcheck = "True"
@@ -46,12 +63,12 @@ while (1 == 1) do
 	end
 	runss = "True"
 	while (runss == "True") do
-		shell.run("clear")
 		local cbal = getuserbal()
 		shell.run("clear")
 		print("Welcome ".. tname .." to ATM #" .. atmn)
 		print("Account balance: " .. tostring(cbal))
-		print("1)Deposit\n2)Withdraw\n9)close")
+		print("Most recent transaction:\n" .. tostring(recenttransacton(tname, 1)))
+		print("1)Deposit\n2)Withdraw\n3)Print recent transactions\n9)close")
 		local usersel = read()
 		if (usersel == "admin") then
 			adminstuff()
@@ -65,6 +82,12 @@ while (1 == 1) do
 			local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(tname .. "|ATM withdraw at ATM #" .. atmn .. "|" .. -tonumber(ammount)))
 			print("Withdrawing " .. ammount .. " emeralds")
 			os.sleep(2)
+		elseif (usersel == "3") then
+			shell.run("clear")
+			print("Most recent transactions (latest first)")
+			print(tostring(recenttransacton(tname, 10)))
+			print("press enter to go back")
+			read()
 		elseif (usersel == "9") then
 			break
 		end

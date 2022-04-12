@@ -163,6 +163,19 @@ def newuser():
 	with open(data + ".txt", 'a') as f:
 		f.write("password")
 	return 'True'
+@app.route('/minecraft/api/getbalhistory/', methods=['POST'])
+def getbalhistory():
+	people = sqlite3.connect('people.db')
+	data = str(request.stream.read()).replace("b'", "").replace("'","")
+	data = data.split("|")
+	try:
+		cursor = people.execute("SELECT * FROM " + data[0] + " ORDER BY rowid DESC LIMIT " + data[1] +";")
+		total = str(cursor.fetchall()).replace("[(", "").replace("'", "").replace(")]", "").replace("(","").replace(",", "")
+		print(total)
+		people.close()
+		return total
+	except:
+		return 'False'
 if __name__ == '__main__':
 
 	app.run(host='0.0.0.0', port=20)
