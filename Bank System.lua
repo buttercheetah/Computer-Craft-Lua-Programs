@@ -35,7 +35,7 @@ while (1 == 1) do
 		end
 		cbal = getuserbal(username)
 		print("Current balance: " .. cbal)
-		print("1)deposit\n2)withdrawl\n3)Change user\n4)Logout")
+		print("1)deposit\n2)withdrawl\n3)Createcard\n4)Change user\n5)Logout")
 		local choice = read()
 		if choice == "1" then
 			print("How much?")
@@ -48,8 +48,13 @@ while (1 == 1) do
 			local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(username .. "|Withdrawl at Bank|" .. -tonumber(ammount)))
 			print(request.readAll())
 		elseif choice == "3" then
-			username = nil
+			print("Please insert card and press enter")
+			read()
+			local h = fs.open("/disk/name.lua", "w") 
+			h.write(username) -- completely insecure and easily ahcked... in all honesty, i dont care
 		elseif choice == "4" then
+			username = nil
+		elseif choice == "5" then
 			username = nil
 			Login = "False"
 		end

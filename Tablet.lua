@@ -32,10 +32,11 @@ function adminstuff ()
     print("1) Make new OS Current Version")
     print("2) Make new OS an input version")
     print("3) New Announcement")
-	print("4) New user")
-	print("5) Run External Application")
-	print("6) Run File directly from URL")
-    print("7) back")
+    print("4) New user")
+    print("5) Run External Application")
+    print("6) Run File directly from URL")
+    print("7) Print all users")
+    print("8) back")
     local choice = read()
     if (choice == "1") then
       local request = http.post("http://misc.iefi.xyz/minecraft/api/setversion/", tostring(osv))
@@ -79,7 +80,12 @@ function adminstuff ()
 		print("URL")
 		local url = read()
 		shell.run('wget run ' .. url)
-	elseif (choice == "7") then
+  elseif (choice == "7") then
+    local request = http.get("https://misc.iefi.xyz/minecraft/api/getallusers/")
+    print(request.readAll())
+    print('Press enter to close')
+    read()
+	elseif (choice == "8") then
       tmprun2 = "False"
     end
   end

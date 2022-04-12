@@ -1,8 +1,9 @@
 local modem = peripheral.find("modem") or error("No modem attached", 0)
-local atmn = 0001
+local atmn = 0003
 local tname = ""
-local function getuserbal (name)
-  local request = http.post("http://misc.iefi.xyz/minecraft/api/getbal/", name)
+local function getuserbal(name)
+    print("name "..name)
+  local request = http.post("http://misc.iefi.xyz/minecraft/api/getbal/", tostring(name))
   local body = request.readAll()
   return tonumber(body)
 end
@@ -19,6 +20,7 @@ function cardread()
 			name = h.readLine()
 			print("Please take out card")
 			while (file_exists('/disk/name.lua')) do
+				--speaker.playSound("minecraft:block.note_block.harp")
 				os.sleep(0.2)
 			end
 		end
@@ -84,20 +86,23 @@ while (1 == 1) do
 				os.sleep(2)
 			end
 		else
-			print("If you do not wish to use a card, please power cycle the atm\nOtherwise, please enter your card")
+			print("If you do not wish to use a card, please power cycle the atm")
 			local username = cardread()
+   local cbal = nil
 			cbal = getuserbal(username)
+   print(username)
+   print(cbal)
 			if cbal == nil then
 				print("user does not exist")
 			else
 				tname = username
-				runcheck = 'False'
+    runcheck = 'False'
 			end
 		end
 	end
 	runss = "True"
 	while (runss == "True") do
-		local cbal = getuserbal()
+		local cbal = getuserbal(tname)
 		shell.run("clear")
 		print("Welcome ".. tname .." to ATM #" .. atmn)
 		print("Account balance: " .. tostring(cbal))
