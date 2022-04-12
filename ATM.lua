@@ -38,7 +38,7 @@ function recenttransacton(name, amount)
 	else
 		body = string.gsub(body, "%)", "\n")
 	end
-	return tonumber(body)
+	return body
 end
 while (1 == 1) do
 	runcheck = "True"
