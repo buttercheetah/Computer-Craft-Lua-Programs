@@ -1,10 +1,30 @@
 local modem = peripheral.find("modem") or error("No modem attached", 0)
 local atmn = 0001
 local tname = ""
-local function getuserbal ()
-  local request = http.post("http://misc.iefi.xyz/minecraft/api/getbal/", tname)
+local function getuserbal (name)
+  local request = http.post("http://misc.iefi.xyz/minecraft/api/getbal/", name)
   local body = request.readAll()
   return tonumber(body)
+end
+function file_exists(name)
+	local f=io.open(name,"r")
+	if f~=nil then io.close(f) return true else return false end
+ end
+function cardread()
+	local name = nil
+	while (name == nil) do
+		os.sleep(1)
+		if (file_exists('/disk/name.lua')) then
+			local h = fs.open("/disk/name.lua", "r")
+			name = h.readLine()
+			print("Please take out card")
+			while (file_exists('/disk/name.lua')) do
+				os.sleep(0.2)
+			end
+		end
+	 
+	end
+	return name
 end
 function adminstuff ()
   tmprun2 = "True"
@@ -43,23 +63,37 @@ end
 while (1 == 1) do
 	runcheck = "True"
 	while (runcheck == "True") do
-	  shell.run("clear")
-	  print("Welcome to ATM #" .. atmn)
-	  print("Please enter your username")
-	  local username = read()
-	  print("Please enter your password")
-	  local password = read('*')
-	  local request = http.post("http://misc.iefi.xyz/minecraft/api/login/", tostring(username .. "|" .. password))
-	  local body = request.readAll()
-	  if (body == "True") then
-		print("Login Succsesfull")
-		os.sleep(1)
-		tname = username
-		runcheck = "False"
-	  else
-		print("User doesnt exist\nor password incorect")
-		os.sleep(2)
-	  end
+		shell.run("clear")
+		print("Welcome to ATM #" .. atmn)
+		print("Would you like to use your card?\nY/n")
+		local option = read()
+		if (option == "n") or (option == "N") then
+			print("Please enter your username")
+			local username = read()
+			print("Please enter your password")
+			local password = read('*')
+			local request = http.post("http://misc.iefi.xyz/minecraft/api/login/", tostring(username .. "|" .. password))
+			local body = request.readAll()
+			if (body == "True") then
+				print("Login Succsesfull")
+				os.sleep(1)
+				tname = username
+				runcheck = "False"
+			else
+				print("User doesnt exist\nor password incorect")
+				os.sleep(2)
+			end
+		else
+			print("If you do not wish to use a card, please power cycle the atm\nOtherwise, please enter your card")
+			local username = cardread()
+			cbal = getuserbal(username)
+			if cbal == nil then
+				print("user does not exist")
+			else
+				tname = username
+				runcheck = 'False'
+			end
+		end
 	end
 	runss = "True"
 	while (runss == "True") do
