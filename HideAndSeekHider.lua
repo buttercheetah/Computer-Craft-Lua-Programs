@@ -1,7 +1,7 @@
 local modem = peripheral.find("modem") or error("No modem attached", 0)
 local sleeptimer = 60
 function trans(floor)
-    print("Transmitting floor " .. floor)
+    --print("Transmitting floor " .. floor)
     modem.transmit(20, 21, floor)
 end
 function getside(z)
@@ -53,7 +53,8 @@ while (1==1) do
     else
         trans('Cheating ' .. getside(z))
     end
-    local timeout = os.startTimer(sleeptimer)
+    local timeout = os.startTimer(tonumber(sleeptimer))
+    --print(timeout)
     while true do
         osevent = {os.pullEvent()}
         --print(osevent[1] .. osevent[2])
@@ -64,11 +65,11 @@ while (1==1) do
                 break
              end  
         elseif osevent[1] == "modem_message" then
-            print(osevent[3])
+            --print(osevent[3])
             if osevent[3] == 21 then
                 print('Seeker on floor ' .. osevent[5])
             end
         end
-    os.cancelTimer(timeout)
+    --os.cancelTimer(timeout)
     end
 end
