@@ -19,6 +19,17 @@ function getnewannouncements ()
     print(body)
   end
 end
+function recenttransacton(name, amount)
+	local request = http.post("http://misc.iefi.xyz/minecraft/api/getbalhistory/", name .. "|" .. amount)
+	local body = request.readAll()
+	if amount == 1 then
+		body = string.gsub(body, "%)", "")
+	else
+		body = string.gsub(body, "%) ", "\n")
+    body = string.gsub(body, "%)", "\n")
+	end
+	return body
+end
 function file_exists(name)
    local f=io.open(name,"r")
    if f~=nil then io.close(f) return true else return false end
@@ -136,13 +147,13 @@ while (runcheck == "True") do
   local request = http.post("http://misc.iefi.xyz/minecraft/api/login/", tostring(username .. "|" .. password))
   local body = request.readAll()
   if (body == "True") then
-	print("Login Succsesfull")
-	os.sleep(1)
-	tname = username
-	runcheck = "False"
+    print("Login Succsesfull")
+    os.sleep(1)
+    tname = username
+    runcheck = "False"
   else
-	print("User doesnt exist\nor password incorect")
-	os.sleep(2)
+    print("User doesnt exist\nor password incorect")
+    os.sleep(2)
   end
 
 end
@@ -181,8 +192,9 @@ while (1 == 1) do
       local cbal = getuserbal()
       shell.run("clear")
       print("Account balance: " .. tostring(cbal))
-      print("1) Send money to another account")
-      print("2) return")
+      print("1) Send money")
+      print("2) See recent transactions")
+      print("3) return")
       local choice = read()
       if (choice == "1") then
         if (cbal > tonumber(0)) then
@@ -206,6 +218,9 @@ while (1 == 1) do
           os.sleep(5)
         end
       elseif (choice == "2") then
+        print(tostring(recenttransacton(tname, 4)) .. "\nPress enter to go back")
+        read()
+      elseif (choice == "3") then
         tmprun2 = "False"
       end
     end
