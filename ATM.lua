@@ -58,7 +58,8 @@ function recenttransacton(name, amount)
 	if amount == 1 then
 		body = string.gsub(body, "%)", "")
 	else
-		body = string.gsub(body, "%)", "\n")
+		body = string.gsub(body, "%) ", "\n")
+    	body = string.gsub(body, "%)", "\n")
 	end
 	return body
 end
