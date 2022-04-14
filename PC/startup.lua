@@ -166,11 +166,11 @@ while (1 == 1) do
                     print("Updating")
                     shell.run("rm bbde")
                 end
-                shell.run("wget link bbde")
+                shell.run("wget https://github.com/buttercheetah/Computer-Craft-Lua-Programs/raw/main/PC/bbe.lua bbde")
             elseif (choice == '1') then
                 if (file_exists(cal) == true) then
                     print("Updating")
-                    shell.run("rm bbde")
+                    shell.run("rm cal")
                 end
                 shell.run("wget link cal")
             elseif (choice == '9') then
@@ -206,5 +206,11 @@ while (1 == 1) do
             print(request.readAll())
             os.sleep(3)
         end
+    elseif (usersel == "3") and (file_exists(Gh2O) == true) then
+        shell.run("Gh2O")
+    elseif (usersel == "4") and (file_exists(bbde) == true) then
+        shell.run("bbde")
+    elseif (usersel == "5") and (file_exists(cal) == true) then
+        shell.run("cal")
     end
 end
