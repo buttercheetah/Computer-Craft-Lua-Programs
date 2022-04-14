@@ -1,6 +1,10 @@
 local modem = peripheral.find("modem") or error("No modem attached", 0)
 
 local osv = "1.1"
+function clearscreen()
+  term.clear()                            -- Paint the entire display with the current background colour.
+  term.setCursorPos(1,1)                  -- Move the cursor to the top left position.
+end
 function checkforupdate ()
   local request = http.get("http://misc.iefi.xyz/minecraft/api/version/")
   local body = request.readAll()
@@ -38,7 +42,7 @@ end
 function adminstuff ()
   tmprun2 = "True"
   while (tmprun2 == "True") do
-    shell.run("clear")
+    clearscreen()
     print("select and option")
     print("1) Make new OS Current Version")
     print("2) Make new OS an input version")
@@ -104,7 +108,7 @@ end
 network = nil
 function getandprintnetwork ()
 	network = nil
-	shell.run("clear")
+	clearscreen()
 	print("Attempting to connect")
 	while network == nil do
 		modem.open(2) -- Open 43 so we can receive replies
@@ -137,7 +141,7 @@ local tname = ""
 runcheck = "True"
 while (runcheck == "True") do
   getandprintnetwork()
-  shell.run("clear")
+  clearscreen()
   print("WiFi:" .. network)
   print("Welcome!")
   print("Please enter your username")
@@ -155,11 +159,10 @@ while (runcheck == "True") do
     print("User doesnt exist\nor password incorect")
     os.sleep(2)
   end
-
 end
 while (1 == 1) do
   getandprintnetwork()
-  shell.run("clear")
+  clearscreen()
   print("Welcome " .. tname)
   print("WiFi:" .. network)
   checkforupdate()
@@ -173,7 +176,7 @@ while (1 == 1) do
   elseif (usersel == "1") then
     local tmprun4 = "True"
     while (tmprun4 == "True") do
-      shell.run("clear")
+      clearscreen()
       print("Welcome " .. tname)
       print("9) back")
       local choice = read()
@@ -190,7 +193,7 @@ while (1 == 1) do
     local tmprun2 = "True"
     while (tmprun2 == "True") do
       local cbal = getuserbal()
-      shell.run("clear")
+      clearscreen()
       print("Account balance: " .. tostring(cbal))
       print("1) Send money")
       print("2) See recent transactions")
@@ -225,14 +228,14 @@ while (1 == 1) do
       end
     end
   elseif (usersel == "3") then 
-    shell.run("clear")
-	local request = http.get("http://misc.iefi.xyz/minecraft/api/version/")
-	local body = request.readAll()
-	if (body == osv) then
-		print("OS is up to date")
-	else
-		print("Current OS:" .. osv .. "\nAvailable OS:" .. body)
-	end
+    clearscreen()
+	  local request = http.get("http://misc.iefi.xyz/minecraft/api/version/")
+	  local body = request.readAll()
+	  if (body == osv) then
+		  print("OS is up to date")
+	  else
+		  print("Current OS:" .. osv .. "\nAvailable OS:" .. body)
+	  end
     print("\n1)update OS\n2)Reboot\n3)Shutdown\n4)Change password\n5)Back")
     local usersel2 = read()
     if (usersel2 == "1") then
