@@ -211,9 +211,9 @@ while (1 == 1) do
             print("Error: user doesnt exist")
             os.sleep(2)
           else
-            local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(tname .. "|Balance Transfer to " .. oac .. "|" .. -tonumber(transfer)))
+            local request = http.put("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(tname .. "|Balance Transfer to " .. oac .. "|" .. -tonumber(transfer)))
             local body = request.readAll()
-            local request = http.post("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(oac .. "|Balance Transfer from" .. tname .. "|" .. tonumber(transfer)))
+            local request = http.put("http://misc.iefi.xyz/minecraft/api/applypurchase/", tostring(oac .. "|Balance Transfer from" .. tname .. "|" .. tonumber(transfer)))
             local body = request.readAll()
           end
         else
