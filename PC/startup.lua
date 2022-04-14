@@ -2,7 +2,10 @@ local modem = peripheral.find("modem") or error("No modem attached", 0)
 local osv = "1.0"
 network = nil
 tname = ""
-
+function file_exists(name)
+	local f=io.open(name,"r")
+	if f~=nil then io.close(f) return true else return false end
+ end
 function checkforupdate ()
   local request = http.get("http://misc.iefi.xyz/minecraft/pc/api/version/")
   local body = request.readAll()
@@ -118,11 +121,63 @@ while (1 == 1) do
     getnewannouncements()
     print("1) App store")
     print("2) settings")
+    if (file_exists(Gh2O) == true) then
+        print("3) Gh2O game launcher")
+    end
+    if (file_exists(bbde) == true) then
+        print("4) Butter Bank DE")
+    end
+    if (file_exists(cal) == true) then
+        print("5) Calculator")
+    end
     local usersel = read()
     if (usersel == "admin") then
         adminstuff()
     elseif (usersel == "1") then
-        print("app store to come")
+        local tmprun = true
+        while tmprun == true do
+            clearscreen()
+            print("Available Apps:")
+            term.write("1) Gh2O game launcher - ")
+            if (file_exists(Gh2O) == true) then
+                print("Installed")
+            else:
+                print("Not installed")
+            term.write("2) Butter Bank DE - ")
+            if (file_exists(bbde) == true) then
+                print("Installed")
+            else:
+                print("Not installed")
+            term.write("3) Calculator - ")
+            if (file_exists(cal) == true) then
+                print("Installed")
+            else:
+                print("Not installed")
+            print("9) close")
+            choice = read()
+            if (choice == '1') then
+                if (file_exists(Gh2O) == true) then
+                    print("Updating")
+                    shell.run("rm Gh2O")
+                end
+                shell.run("wget link Gh2O")
+            elseif (choice == '1') then
+                if (file_exists(bbde) == true) then
+                    print("Updating")
+                    shell.run("rm bbde")
+                end
+                shell.run("wget link bbde")
+            elseif (choice == '1') then
+                if (file_exists(cal) == true) then
+                    print("Updating")
+                    shell.run("rm bbde")
+                end
+                shell.run("wget link cal")
+            elseif (choice == '9') then
+                tmprun = false
+            end
+            os.sleep(2)
+        end
     elseif (usersel == "2") then
         clearscreen()
         local request = http.get("http://misc.iefi.xyz/minecraft/api/version/")
@@ -136,7 +191,7 @@ while (1 == 1) do
         local usersel2 = read()
         if (usersel2 == "1") then
             shell.run("rm startup")
-            shell.run("wget link startup")
+            shell.run("wget https://github.com/buttercheetah/Computer-Craft-Lua-Programs/raw/main/PC/startup.lua startup")
             shell.run("reboot")
         elseif (usersel2 == "2") then
             shell.run("reboot")
