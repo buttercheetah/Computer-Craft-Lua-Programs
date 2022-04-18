@@ -176,6 +176,34 @@ def getbalhistory():
 		return total
 	except:
 		return 'False'
+
+
+@app.route('/minecraft/api/pc/gh/advertisement/', methods=['GET'])
+def advertisement():
+	with open('ghadvertisement.txt') as f:
+		advertisements = f.readlines()
+		print(len(advertisements))
+	return str(advertisements[random.randrange(0,len(advertisements))]).replace("\n","")
+@app.route('/minecraft/api/pc/gh/setadvertisement/', methods=['POST'])
+def setadvertisement():
+	with open('ghadvertisement.txt', 'a') as f:
+		data = str(request.stream.read()).replace("b'", "").replace("'","")
+		f.write(str(data).replace("'", "") + "\n")
+	return 'True'
+
+
+@app.route('/minecraft/api/pc/setversion/', methods=['POST'])
+def setver():
+	with open('pcversion.txt', 'w') as f:
+		data = str(request.stream.read()).replace("b'", "").replace("'","")
+		print(data)
+		f.write(data)
+	return 'True'
+@app.route('/minecraft/api/pc/version/', methods=['GET'])
+def getver():
+	print("sending version")
+	with open('pcversion.txt') as f:
+		return f.readline()
 if __name__ == '__main__':
 
 	app.run(host='0.0.0.0', port=20)
