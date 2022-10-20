@@ -14,25 +14,49 @@ function getnewannouncements ()
     else
       print(body)
     end
-  end
+end
+function checkifgameowned(game, pname)
+    io.write()
+    --do a http reuest to see if the player ownes the game... retunr true if so
+end
+function getplayername()
+    local h = fs.open("pname", "r")
+    name = h.readLine()
+	return name
+end
+function printgamedesc(game)
+    if (game == "doom") then
+        print("Interface : 3D")
+        print("Develooper: Xelostar")
+        print("Publisher: c3n")
+        print("Game Description:")
+        print("Doom is a 1993 first-person shooter (FPS) game developed by id Software for MS-DOS. Players assume the role of a space marine, popularly known as Doomguy, fighting their way through hordes of invading demons from hell.") -- got from wikipedia like the lazy potato i am
+    elseif game == 
+    
+    end 
+end
+pname = getplayername()
 local tmprun = true
 while tmprun == true do
     clearscreen()
     print("Available Games:")
-    term.write("1) ")
-    if (file_exists(Gh2O) == true) then
+    term.write("1) Doom")
+    if (file_exists(doom) == true) then
         print("Installed")
-    else:
-        print("Not installed")
+    else
+        if checkifgameowned("doom", pname) then
+            print("Not installed")
+        else
+            print("Not owned")
     term.write("2) Butter Bank DE - ")
     if (file_exists(bbde) == true) then
         print("Installed")
-    else:
+    else
         print("Not installed")
     term.write("3) Calculator - ")
     if (file_exists(cal) == true) then
         print("Installed")
-    else:
+    else
         print("Not installed")
     print("9) close")
     if (choice == '1') then

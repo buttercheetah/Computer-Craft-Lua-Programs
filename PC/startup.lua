@@ -112,6 +112,8 @@ while (runcheck == "True") do
     os.sleep(2)
   end
 end
+local f=io.open("pname","w")
+f:write(tname)
 while (1 == 1) do
     getandprintnetwork()
     clearscreen()
