@@ -292,27 +292,6 @@ def transferfunds():
 			return "Inccorect Credentials"
 	except Exception as e:
 		return str(e)
-#@app.route('/minecraft/api/gettransactions', methods=['POST'])
-#def gettransactions():
-#	recon()
-#	try:
-#		data = request.stream.read()
-#		data = data.decode("utf-8")
-#		data = data.split("|")
-#		if checkcred(data[0], data[1]):
-#			ign = getign(data[0],data[1])
-#			cur.execute("select Transaction_ID,ammount,Description from MC_User_Bank where User='"+ign+"' order by Transaction_ID DESC limit "+data[2]+";")
-#			rows = cur.fetchall()
-#			result = returnpretty(["ID","Amount","Description"])
-#			result +="\n"
-#			for i in rows:
-#				result += "\n"
-#				result += returnpretty(i)
-#			return str(result)
-#		else:
-#			return "Unkown error occured"
-#	except Exception as e:
-#		return str(e)
 @app.route('/minecraft/api/gettransactions', methods=['POST'])
 def gettransactions():
 	recon()
@@ -324,11 +303,10 @@ def gettransactions():
 			ign = getign(data[0],data[1])
 			cur.execute("select Transaction_ID,ammount,Description from MC_User_Bank where User='"+ign+"' order by Transaction_ID DESC limit "+data[2]+";")
 			rows = cur.fetchall()
-			result = returnpretty(["ID","Amount","Description"])
-			result +="\n"
+			result = ""
 			for i in rows:
-				result += "\n"
-				result += returnpretty(i)
+				result += "ID: " + str(i[0]) + "\nAmount: " + str(i[1]) + "\nDescription:\n" + str(i[2])
+				result += "\n\n"
 			return str(result)
 		else:
 			return "Unkown error occured"
