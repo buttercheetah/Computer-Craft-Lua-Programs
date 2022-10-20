@@ -354,6 +354,21 @@ def changeshopdesc():
 	except Exception as e:
 		print(e)
 		return str(e)
+@app.route('/minecraft/api/banktransaction', methods=['POST'])
+def banktransaction():
+	recon()
+	timee = time.strftime('%Y-%m-%d %H:%M:%S')
+	try:
+		data = request.stream.read()
+		data = data.decode("utf-8")
+		data = data.split("|")
+		ign = returnuserign(data[0])
+		cur.execute("INSERT INTO MC_User_Bank (DateTime,User,Ammount,Description) VALUES (?, ?, ?, ?);", (timee, ign, int(int(data[1]),str("Bank " + data[data[2]]))))		
+		conn.commit()
+		return "Transaction Successfull"
+	except Exception as e:
+		return str(e)
+
 
 def recon():
 	global conn,cur
