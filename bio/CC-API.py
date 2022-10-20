@@ -284,8 +284,8 @@ def transferfunds():
 		data = data.split("|")
 		if checkcred(data[0], data[1]):
 			ign = getign(data[0],data[1])
-			cur.execute("INSERT INTO MC_User_Bank (DateTime,User,Ammount,Description) VALUES (?, ?, ?, ?);", (timee, ign, int(int(data[3])*(-1)),str("Transfer to " + str(data[2]))))
-			cur.execute("INSERT INTO MC_User_Bank (DateTime,User,Ammount,Description) VALUES (?, ?, ?, ?);", (timee, data[2], int(data[3]),str("Transfer to " + str(ign))))
+			cur.execute("INSERT INTO MC_User_Bank (DateTime,User,Ammount,Description) VALUES (?, ?, ?, ?);", (timee, ign, int(int(data[3])*(-1)),str("Transfer to " + str(data[2]) + " : " + str(data[4]))))
+			cur.execute("INSERT INTO MC_User_Bank (DateTime,User,Ammount,Description) VALUES (?, ?, ?, ?);", (timee, data[2], int(data[3]),str("Transfer to " + str(ign) + " : " + str(data[4]))))
 			conn.commit()
 			return "Transaction Successfull"
 		else:

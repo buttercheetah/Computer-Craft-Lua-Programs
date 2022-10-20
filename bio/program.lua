@@ -294,8 +294,8 @@ local function onlynum(positive)
     end
     return ui
 end
-local function transfermoney(username,password,ouser,ammount)
-    local request = http.post("http://misc.iefi.xyz/minecraft/api/transferfunds", tostring(username.."|"..password.."|"..ouser.."|"..ammount))
+local function transfermoney(username,password,ouser,ammount,note)
+    local request = http.post("http://misc.iefi.xyz/minecraft/api/transferfunds", tostring(username.."|"..password.."|"..ouser.."|"..ammount.."|"..note))
     local body = request.readAll()
     return body
 end
@@ -318,9 +318,12 @@ local function transfermoneyui(username,password)
         end
         print("How much would you like to transfer?")
         local ammount = onlynum(true)
+        print("would you like to include a note?")
+        local note = read()
         clear()
         print("Ammount: " .. tonumber(ammount))
         print("Recipient: " .. igntotransfer)
+        print("Note: " .. note)
         print("Is this correct? [Y/n]")
         local ui = read()
         if (ui == "n" or ui == "N") then
@@ -328,7 +331,7 @@ local function transfermoneyui(username,password)
             run = false
             break
         else
-            print(transfermoney(username,password,igntotransfer,ammount))
+            print(transfermoney(username,password,igntotransfer,ammount,note))
             run = false
             break
         end
