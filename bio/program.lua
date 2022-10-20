@@ -30,8 +30,16 @@ local function checkign(name)
     end
     return body
 end
+local function printbanner()
+    print("------------------")
+    print("    Buttery OS    ")
+    print("------------------")
+    print("Brought to you by,")
+    print("Butter Inc.")
+    print("------------------")
+end
 local function printmostrecenttransactions(username,password)
-    local request = http.post("http://misc.iefi.xyz/minecraft/api/gettransactions", tostring(username.."|"..password.."|10"))
+    local request = http.post("http://misc.iefi.xyz/minecraft/api/gettransactions", tostring(username.."|"..password.."|2"))
     local body = request.readAll()
     print(body)
 end
@@ -128,6 +136,7 @@ local function storebrowser(username,password)
     local run = true
     while (run == true) do
         clear()
+        printbanner()
         print("0) return")
         for key, value in ipairs(shoplist) do
             print(key .. ") "..value)
@@ -220,6 +229,7 @@ local function manageownedstores(username,password)
     local run = true
     while (run == true) do
         clear()
+        printbanner()
         print("0) return")
         for key, value in ipairs(shoplist) do
             print(key .. ") "..value)
@@ -240,6 +250,7 @@ local function managestores(username,password)
     local run = true
     while (run == true) do
         clear()
+        printbanner()
         print("0) return")
         print("1) Create store")
         print("2) Manage owned stores")
@@ -258,6 +269,7 @@ local function storemenu(username,password)
     local run = true
     while (run == true) do
         clear()
+        printbanner()
         print("0) return")
         print("1) Browse Stores")
         print("2) Manage Stores")
@@ -343,6 +355,7 @@ local function mobilebanking(username,password)
     local run = true
     while (run == true) do
         clear()
+        printbanner()
         print("Current Balance: "..getuserbal(username,password))
         print("0) go back")
         print("1) View recent transactions")
@@ -406,13 +419,17 @@ local login = false
 local run = true
 while (login == false) do -- Login
     clear()
+    printbanner()
     ign = ""
-    print("Enter [L] to login to your account.\nEnter [c] to create an account\nEnter [q] to quit")
+    print("Enter an option\n[L] to login.\n[c] to create an account\n[q] to quit\n[u] to update")
     local ui = read()
     if (ui == "q" or ui == "Q") then
         run = false
         break
     end
+    if (ui == "u") then
+        update()
+    end 
     if (ui == "c" or ui == "C") then
         print("Please enter your ign as it is in game.")
         ign = read()
@@ -432,6 +449,7 @@ while (login == false) do -- Login
 end
 while (run == true) do
     clear()
+    printbanner()
     print("0) quit")
     print("1) Mobile Banking")
     print("2) Store Menu")
