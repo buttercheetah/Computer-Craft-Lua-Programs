@@ -26,8 +26,8 @@ while (run == true) do
 		if (ver == "N" or ver == "n") then
 			break
 		end
-		local request = http.post("http://misc.iefi.xyz/minecraft/api/getbal/", playername)
+		local request = http.post("http://misc.iefi.xyz/minecraft/api/banktransaction", username .. "|" .. tr .. "|" .. amount)
 		local body = request.readAll()
-		return tonumber(body)
+		print(body)
 	end
 end
