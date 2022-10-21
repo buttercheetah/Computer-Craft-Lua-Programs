@@ -186,6 +186,40 @@ local function displaystoredata(username,password,storename)
         end
     end
 end
+local function getorderfromownedstore(username,password)
+    local run = true
+    while (run == true) do
+        clear()
+        local request = http.post("http://misc.iefi.xyz/minecraft/api/getordersfromownedstore", username.."|"..password)
+        local body = request.readAll()
+        if (body == "No Orders") then
+            print(body)
+            print("Press enter to go back")
+            read()
+            run = false
+            break
+        end
+        print(body)
+        local orderlist = split(body,"|")
+        clear()
+        print("Order ID: "..orderlist[1])
+        print("User: "..orderlist[2])
+        print("Store: "..orderlist[4])
+        print("Order Request: "..orderlist[3])
+        print("0) return")
+        print("1) Mark as finished")
+        local ui = read()
+        if (ui == "0") then
+            run = false
+            break
+        elseif (ui == "1") then
+            local request = http.post("http://misc.iefi.xyz/minecraft/api/changeorderstatus", username.."|"..password.."|"..orderlist[1].."|".."1")
+            local body = request.readAll()
+            print(body)
+            os.sleep(2)
+        end
+    end
+end
 local function displayownedstoredata(username,password,storename)
     local run = true
     while (run == true) do
@@ -254,6 +288,7 @@ local function managestores(username,password)
         print("0) return")
         print("1) Create store")
         print("2) Manage owned stores")
+        print("3) check for new orders")
         local ui = read()
         if (ui == "0") then
             run = false
@@ -262,6 +297,8 @@ local function managestores(username,password)
             createstore(username,password)
         elseif (ui == "2") then
             manageownedstores(username,password)
+        elseif (ui == "3") then
+            getorderfromownedstore(username,password)
         end
     end
 end
@@ -380,12 +417,32 @@ local function submitticket(username,password)
         print("What kind of ticket would you like to open?")
         print("1) Software Bug")
         print("2) Software idea")
-        local ui = read()
-        if (ui == "1") then
+        local tkind = read()
+        if (tkind == "1") then
             while (run == true) do
-                print("What kind of bug?")
-                print("1) ")
-                -- Pickup here
+                print("What bug catagory?")
+                print("1) Mobile banking")
+                print("2) Login screen")
+                print("3) Shop Browser")
+                print("4) Shop Manager")
+                print("5) Other")
+                local bcat = read()
+                if (bcat == "1" or bcat == "2" or bcat == "3" or bcat == "4" or bcat == "5") then
+                    if (bcat == "1") then
+                        bcat = "Mobile Banking"
+                    elseif (bcat == "2") then
+                        bcat = "Login Screen"
+                    elseif (bcat == "3") then
+                        bcat = "Shop Browser"
+                    elseif (bcat == "4") then
+                        bcat = "Shop Manager"
+                    else
+                        bcat = "Other"
+                    end
+                    print("Please describe the issue.")
+                    local issuedesc = read()
+                    -- Pickup here
+                end
             end
         end
     end

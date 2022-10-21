@@ -363,13 +363,55 @@ def banktransaction():
 		data = data.decode("utf-8")
 		data = data.split("|")
 		ign = returnuserign(data[0])
-		cur.execute("INSERT INTO MC_User_Bank (DateTime,User,Ammount,Description) VALUES (?, ?, ?, ?);", (timee, ign, int(int(data[1]),str("Bank " + data[data[2]]))))		
+		if ign == False:
+			return "Incorrect ign"
+		cur.execute("INSERT INTO MC_User_Bank (DateTime,User,Ammount,Description) VALUES (?, ?, ?, ?);", (timee, ign, int(data[2]),str("Bank " + data[1])))		
 		conn.commit()
 		return "Transaction Successfull"
 	except Exception as e:
 		return str(e)
 
-
+@app.route('/minecraft/api/getordersfromownedstore', methods=['POST'])
+def getordersfromownedstore():
+	recon()
+	try:
+		data = request.stream.read()
+		data = data.decode("utf-8")
+		data = data.split("|")
+		if checkcred(data[0], data[1]):
+			ign = getign(data[0],data[1])
+			cur.execute("select MC.MC_Store_orders.Order_ID, MC.MC_Store_orders.`User`, MC.MC_Store_orders.Order_Description, MC.MC_Store_list.Store_Name from MC.MC_Store_orders Join MC.MC_Store_list on (MC.MC_Store_list.ID=MC.MC_Store_orders.Store_ID) where MC.MC_Store_list.`User`='"+str(ign)+"' and MC.MC_Store_orders.Done=0 order by MC.MC_Store_orders.Order_ID desc limit 1;")
+			rows = cur.fetchall()
+			print(rows)
+			print(len(rows))
+			if len(rows) == 0:
+				return "No Orders"
+			for i in rows:
+				result = str(i[0]) + "|" + str(i[1]) + "|" + str(i[2]) + "|" + str(i[3])
+			return str(result)
+		else:
+			return "Unkown error occured"
+	except Exception as e:
+		return str(e)
+@app.route('/minecraft/api/changeorderstatus', methods=['POST'])
+def changeorderstatus():
+	recon()
+	timee = time.strftime('%Y-%m-%d %H:%M:%S')
+	try:
+		data = request.stream.read()
+		data = data.decode("utf-8")
+		data = data.split("|")
+		print(data)
+		if checkcred(data[0], data[1]):
+			ign = getign(data[0],data[1])
+			cur.execute("UPDATE MC_Store_orders set MC_Store_orders.Done="+data[3]+" where MC_Store_orders.Order_ID='"+str(data[2])+"';")
+			conn.commit()
+			return "True"
+		else:
+			return "Incorrect Credentials"
+	except Exception as e:
+		print(e)
+		return str(e)
 def recon():
 	global conn,cur
 	user = "User"
