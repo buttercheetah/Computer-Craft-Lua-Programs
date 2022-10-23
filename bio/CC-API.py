@@ -370,7 +370,6 @@ def banktransaction():
 		return "Transaction Successfull"
 	except Exception as e:
 		return str(e)
-
 @app.route('/minecraft/api/getordersfromownedstore', methods=['POST'])
 def getordersfromownedstore():
 	recon()
@@ -412,6 +411,24 @@ def changeorderstatus():
 	except Exception as e:
 		print(e)
 		return str(e)
+@app.route('/minecraft/api/submitticket', methods=['POST'])
+def submitticket():
+	recon()
+	timee = time.strftime('%Y-%m-%d %H:%M:%S')
+	try:
+		data = request.stream.read()
+		data = data.decode("utf-8")
+		data = data.split("|")
+		if checkcred(data[0], data[1]):
+			ign = getign(data[0],data[1])
+			cur.execute("INSERT INTO MC_Tickets (Submission_Time,User,Catagory,Description) VALUES (?, ?, ?, ?);", (timee, ign, data[2], data[3]))
+			conn.commit()
+			return "True"
+		else:
+			return "False"
+	except:
+		return "False"
+
 def recon():
 	global conn,cur
 	user = "User"
@@ -469,6 +486,11 @@ if __name__ == '__main__':
 		print(e)
 	try:
 		cur.execute("Create table MC_Store_orders (Order_ID int unsigned auto_increment, Order_Time DateTime, User varchar(255), Store_ID int unsigned, Order_Description LONGTEXT, Done bool, PRIMARY KEY (Order_ID), FOREIGN KEY (Store_ID) REFERENCES MC_Store_list (ID));")
+		conn.commit()
+	except Exception as e:
+		print(e)
+	try:
+		cur.execute("Create table MC_Tickets (Ticket_ID int unsigned auto_increment, Submission_Time DateTime, User varchar(255), Catagory varchar(255), Description LONGTEXT, Completed bool, PRIMARY KEY (Order_ID), FOREIGN KEY (Ticket_ID));")
 		conn.commit()
 	except Exception as e:
 		print(e)

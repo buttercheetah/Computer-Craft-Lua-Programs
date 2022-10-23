@@ -143,14 +143,14 @@ local function storebrowser(username,password)
         end
         local ui = read()
         if (ui == "0") then
-            run = false 
+            run = false
         elseif (shoplist[tonumber(ui)] == nil) then
             clear()
             print(tostring(ui).." not an option\nPress enter to go back")
             read()
         else
             displaystoredata(username,password,shoplist[tonumber(ui)])
-        end  
+        end
     end
 end
 local function getstorelist(username,password)
@@ -238,7 +238,7 @@ local function displayownedstoredata(username,password,storename)
         if (ui == "0") then
             run = false
         elseif (ui == "1") then
-            print("1) Closed") 
+            print("1) Closed")
             print("2) Open")
             local ui = read()
             if (ui == "1" or ui == "2") then
@@ -270,14 +270,14 @@ local function manageownedstores(username,password)
         end
         local ui = read()
         if (ui == "0") then
-            run = false 
+            run = false
         elseif (shoplist[tonumber(ui)] == nil) then
             clear()
             print(tostring(ui).." not an option\nPress enter to go back")
             read()
         else
             displayownedstoredata(username,password,shoplist[tonumber(ui)])
-        end  
+        end
     end
 end
 local function managestores(username,password)
@@ -415,35 +415,64 @@ local function submitticket(username,password)
     while (run == true) do
         clear()
         print("What kind of ticket would you like to open?")
+        print("0) go back")
         print("1) Software Bug")
         print("2) Software idea")
         local tkind = read()
-        if (tkind == "1") then
-            while (run == true) do
-                print("What bug catagory?")
-                print("1) Mobile banking")
-                print("2) Login screen")
-                print("3) Shop Browser")
-                print("4) Shop Manager")
-                print("5) Other")
-                local bcat = read()
-                if (bcat == "1" or bcat == "2" or bcat == "3" or bcat == "4" or bcat == "5") then
-                    if (bcat == "1") then
-                        bcat = "Mobile Banking"
-                    elseif (bcat == "2") then
-                        bcat = "Login Screen"
-                    elseif (bcat == "3") then
-                        bcat = "Shop Browser"
-                    elseif (bcat == "4") then
-                        bcat = "Shop Manager"
-                    else
-                        bcat = "Other"
+        local bcat = ""
+        if (tkind == "1"or tkind=="2") then
+            if (tkind == "1") then
+                local run2 = true
+                while (run2 == true) do
+                    print("What bug catagory?")
+                    print("1) Mobile banking")
+                    print("2) Login screen")
+                    print("3) Shop Browser")
+                    print("4) Shop Manager")
+                    print("5) Other")
+                    bcat = read()
+                    if (bcat == "1" or bcat == "2" or bcat == "3" or bcat == "4" or bcat == "5") then
+                        if (bcat == "1") then
+                            bcat = "Mobile Banking"
+                        elseif (bcat == "2") then
+                            bcat = "Login Screen"
+                        elseif (bcat == "3") then
+                            bcat = "Shop Browser"
+                        elseif (bcat == "4") then
+                            bcat = "Shop Manager"
+                        else
+                            bcat = "Other"
+                        end
+                        run2 = false
                     end
-                    print("Please describe the issue.")
-                    local issuedesc = read()
-                    -- Pickup here
+                end
+            else
+                bcat = "Software Idea"
+            end
+            print("Please provide more information.")
+            local issuedesc = read()
+            local run2 = true
+            while (run2 == true) do
+                clear()
+                print("You are about to submit a ticket with the following detailes")
+                print("Catagory: " .. bcat)
+                print("Details: \n"..issuedesc)
+                print("Is this correct? [y/n]")
+                local ui = read()
+                if (ui == "n" or ui == "N") then
+                    print("Order Canceled")
+                    run2 = false
+                elseif (ui=="Y" or ui == "y") then
+                    local request = http.post("http://misc.iefi.xyz/minecraft/api/submitticket", tostring(username.."|"..password.."|"..bcat.."|"..issuedesc))
+                    local body = request.readAll()
+                    print(body)
+                    run2 = false
                 end
             end
+            os.sleep(2)
+        elseif (tkind == "0") then
+            run = false
+            break
         end
     end
 end
@@ -462,11 +491,13 @@ local function techsupportmenu(username,password)
         elseif (ui == "1") then
             submitticket(username,password)
         elseif (ui == "2") then
-            checkticket(username,password)
+            print("This feature is not yet implemented!")
+            os.sleep(1)
+            --checkticket(username,password)
         end
     end
 end
-function update() 
+function update()
     shell.run("rm startup")
     shell.run("wget https://github.com/buttercheetah/Computer-Craft-Lua-Programs/raw/main/bio/program.lua startup")
     shell.run("reboot")
@@ -486,7 +517,7 @@ while (login == false) do -- Login
     end
     if (ui == "u") then
         update()
-    end 
+    end
     if (ui == "c" or ui == "C") then
         print("Please enter your ign as it is in game.")
         ign = read()
@@ -510,19 +541,20 @@ while (run == true) do
     print("0) quit")
     print("1) Mobile Banking")
     print("2) Store Menu")
+    print("3) Tech Support")
     print("9) Update")
-    --print("3) Tech Support")
+    
     local ui = read()
     if (ui=="1") then
         mobilebanking(username,password)
     elseif (ui == "2") then
         storemenu(username,password)
-    --elseif (ui == "3") then
-    --    techsupportmenu(username,password)
+    elseif (ui == "3") then
+        techsupportmenu(username,password)
     elseif (ui == "0") then
         run = false
     elseif (ui == "9") then
         update()
-    end 
+    end
 end
 shell.run("exit")
