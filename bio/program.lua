@@ -117,10 +117,12 @@ local function displaystoredata(username,password,storename)
         local request = http.post("http://misc.iefi.xyz/minecraft/api/getshopdetails", storename)
         local body = request.readAll()
         local shoplist = split(body,"|")
-        print("Store Name " .. tostring(shoplist[2]))
-        print("Owner " .. tostring(shoplist[1]))
+        print(tostring(shoplist[2]))
+        print("Owner: " .. tostring(shoplist[1]))
         print("Store Description:")
+        print("---------------------")
         print(tostring(shoplist[3]))
+        print("\n")
         print("0) return")
         print("1) Place order at this store")
         local ui = read()
@@ -395,8 +397,8 @@ local function mobilebanking(username,password)
         printbanner()
         print("Current Balance: "..getuserbal(username,password))
         print("0) go back")
-        print("1) View recent transactions")
-        print("2) Transfer money to another account")
+        print("1) View transactions")
+        print("2) Transfer money")
         local ui = read()
         if (ui == "0") then
             run = false
@@ -414,7 +416,7 @@ local function submitticket(username,password)
     local run = true
     while (run == true) do
         clear()
-        print("What kind of ticket would you like to open?")
+        print("What kind of ticket?")
         print("0) go back")
         print("1) Software Bug")
         print("2) Software idea")
@@ -514,17 +516,17 @@ while (login == false) do -- Login
     if (ui == "q" or ui == "Q") then
         run = false
         break
-    end
-    if (ui == "u") then
+    elseif (ui == "u") then
         update()
-    end
-    if (ui == "c" or ui == "C") then
+    elseif (ui == "c" or ui == "C") then
         print("Please enter your ign as it is in game.")
         ign = read()
+    elseif (ui == "adminout") then
+        os.exit()
     end
-    print("Please enter your username.")
+    print("Please enter username.")
     username = read()
-    print("Please enter your password.")
+    print("Please enter password.")
     password = read('*')
     if (ui == "c" or ui == "C") then
         print(createuser(ign,username,password))
@@ -543,7 +545,6 @@ while (run == true) do
     print("2) Store Menu")
     print("3) Tech Support")
     print("9) Update")
-    
     local ui = read()
     if (ui=="1") then
         mobilebanking(username,password)
